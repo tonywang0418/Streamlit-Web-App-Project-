@@ -55,7 +55,7 @@ def acquire_and_use_token():
         st.write("Protected content available")
         hashed_token = hashlib.sha256(st.session_state.token.encode()).hexdigest()
         second_app_url_with_token = f"http://localhost:8501/?access_token={hashed_token}"
-        st.write('<iframe src="http://localhost:<port number to your application, should be able to see once you run streamlit>/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
+        st.write('<iframe src="http://localhost:<PORT TO YOUR APPLICATION PAGE>/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
