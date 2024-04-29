@@ -8,7 +8,7 @@ if not access_token:
     st.title("Blocked")
     st.write("Access token:", access_token)
     st.error("No access token provided")
-    redirect_login_url = "http://localhost:8503"
+    redirect_login_url = "<PORT TO THE LOGIN PAGE>"
     st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)
     st.stop()
 else:
