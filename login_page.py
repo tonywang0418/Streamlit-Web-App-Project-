@@ -5,8 +5,8 @@ import hashlib
 
 # Initialize MSAL PublicClientApplication
 app = PublicClientApplication(
-    "35af6748-20e6-4470-9bad-08154a34db69",
-    authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82",
+    "<CLIENT ID>",
+    authority="https://login.microsoftonline.com/<Tenant ID>",
     client_credential=None
     )
 result = None
@@ -28,7 +28,7 @@ def acquire_and_use_token():
         st.write("Protected content available")
         hashed_token = hashlib.sha256(st.session_state.token.encode()).hexdigest()
         second_app_url_with_token = f"http://localhost:8501/?access_token={hashed_token}"
-        st.write('<iframe src="http://localhost:8501/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
+        st.write('<iframe src="http://localhost:<PORT TO YOUR APPLICATION PAGE>/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
