@@ -1,5 +1,6 @@
 # Capstone AI Chatbot Project  
 For the Streamlit application and login page 
+This application utilizes Streamlit as the framework, Azure Entra ID as the Identity provider, and Microsoft Authentication Library (MSAL) to build the authentication flow    
 
 # Setup
 # #Option1 
