@@ -2,7 +2,7 @@ import streamlit as st
 from msal import PublicClientApplication
 import hashlib
 #import requests
-
+LOCAL_URL_for_Content = "<LOCAL URL FOR YOUR APP CONTENT>"
 # Initialize MSAL PublicClientApplication
 app = PublicClientApplication(
     "<CLIENT ID>",
@@ -27,8 +27,8 @@ def acquire_and_use_token():
         st.session_state.token = result["access_token"]
         st.write("Protected content available")
         hashed_token = hashlib.sha256(st.session_state.token.encode()).hexdigest()
-        second_app_url_with_token = f"http://localhost:8501/?access_token={hashed_token}"
-        st.write('<iframe src="http://localhost:<PORT TO YOUR APPLICATION PAGE>/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
+        second_app_url_with_token = f"{LOCAL_URL_for_Content}/?access_token={hashed_token}"
+        st.write(f'<iframe src="{second_app_url_with_token}" width="800" height="800"></iframe>', unsafe_allow_html=True)
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
