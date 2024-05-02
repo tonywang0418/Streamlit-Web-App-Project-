@@ -25,17 +25,17 @@ pip install streamlit
 pip install msal
 ```
 # Carefully look at code change these parameters before run the script:
-Change Client ID, authority, and port to your application (You should be able to see the port number once you run the script) 
+Change Client ID, authority, and LOCAL_URL_for_Content(You should be able to see the port number once you run the script of your application) 
 ```
 import streamlit as st
 from msal import PublicClientApplication
 import hashlib
 #import requests
-
+LOCAL_URL_for_Content = "<LOCAL URL FOR YOUR APP CONTENT>"
 # Initialize MSAL PublicClientApplication
 app = PublicClientApplication(
     "<CLIENT ID>",
-    authority="https://login.microsoftonline.com/<tenant ID>",
+    authority="https://login.microsoftonline.com/<Tenant ID>",
     client_credential=None
     )
 result = None
@@ -56,8 +56,8 @@ def acquire_and_use_token():
         st.session_state.token = result["access_token"]
         st.write("Protected content available")
         hashed_token = hashlib.sha256(st.session_state.token.encode()).hexdigest()
-        second_app_url_with_token = f"http://localhost:8501/?access_token={hashed_token}"
-        st.write('<iframe src="http://localhost:<PORT TO YOUR APPLICATION PAGE>/?access_token=' + hashed_token + '" width="800" height="800"></iframe>', unsafe_allow_html=True)
+        second_app_url_with_token = f"{LOCAL_URL_for_Content}/?access_token={hashed_token}"
+        st.write(f'<iframe src="{second_app_url_with_token}" width="800" height="800"></iframe>', unsafe_allow_html=True)
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
@@ -90,6 +90,7 @@ if not result:
     st.write("Authenticate to access protected content")
 
 st.write(st.session_state)
+
 ```
 SAVE to a folder you are working on
 
