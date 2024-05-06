@@ -1,7 +1,7 @@
 import streamlit as st
 import hashlib
 from st_pages import Page, show_pages, hide_pages
-redirect_login_url = "http://localhost:8501/login%20page"
+redirect_login_url = "<Login Page URL with port number>/login%20page"
 st.title("AI Chatbot Page")
 st.write(st.session_state)
 
