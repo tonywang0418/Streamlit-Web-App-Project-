@@ -14,7 +14,6 @@ else:
     hide_pages(["login page"])
     if st.button("Sign out"):
         st.session_state.token = None
-        st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)
-
+        st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)# 
     
-    
+# Write the actual content below:  
