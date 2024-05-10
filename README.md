@@ -92,7 +92,9 @@ st.write(st.session_state)
 ```
 SAVE to a folder you are working on
 
-Below change the "redirect_login_url" (You should be able to see the port number once you run that script) 
+Below change the "redirect_login_url" (You should be able to see the port number once you run that script)
+
+Development team, You may write your code below "# Write the actual content below: " This will integrate the authentication feature to your content, hopefully :)
 ```
 import streamlit as st
 import hashlib
@@ -111,6 +113,8 @@ else:
     if st.button("Sign out"):
         st.session_state.token = None
         st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)
+
+# Write the actual content below:
 ```
 SAVE to a folder you are working on
 # Run the Script 
