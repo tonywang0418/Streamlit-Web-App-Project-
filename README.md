@@ -123,3 +123,7 @@ cd to the folder you put those two scripts (make sure you are in virtual env bef
 ```
 streamlit run login_page.py
 ```
+WARNING: 
+There could be a potential bug that could prompt you with an error message like: "Page not found"  the first time you run the script LOCALLY, refreshing the page should resolve the problem.
+
+This BUG is due to unexpected paths in the URL that Streamlit might try to handle but can't find routes for.
