@@ -119,11 +119,7 @@ else:
 SAVE to a folder you are working on
 # Run the Script 
 Type the following in your command prompt or VScode command prompt:
-cd to the folder you put them (make sure you are in virtual env before cd)
+cd to the folder you put those two scripts (make sure you are in virtual env before cd) Only running login_page.py should be fine, the other script will run automatically.  
 ```
 streamlit run login_page.py
-```
-open another command prompt type:
-```
-streamlit run AIchatbot_page.py
 ```
