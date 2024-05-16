@@ -1,4 +1,4 @@
-# Capstone AI Chatbot Project  
+# Capstone AI Chatbot Project version 3.0 
 For the Streamlit application and login page 
 
 This application utilizes Streamlit as the framework, Azure Entra ID as the Identity provider, and Microsoft Authentication Library (MSAL) to build the authentication flow    
@@ -21,36 +21,33 @@ Download requirements.txt to Install following packages:
 ```
 pip install -r requirements.txt
 ```
+Download login_page.py, AIchatbot_page.py and main.py, and make sure to save them into one folder.
 # Carefully look at code change these parameters before run the script:
 Change Client ID, authority(Tenant ID) 
 ```
 import streamlit as st
 from msal import PublicClientApplication
 import hashlib
-from st_pages import Page, show_pages, hide_pages
-# Initialize MSAL PublicClientApplication
-app = PublicClientApplication(
+def acquire_and_use_token():
+    app = PublicClientApplication(
     "<Client ID>",
     authority="https://login.microsoftonline.com/<Tenant ID>",
     client_credential=None
     )
-
-# Function to acquire and use token
-def acquire_and_use_token():
     global result
     accounts = app.get_accounts()
     if accounts:
         result = app.acquire_token_silent(["User.Read"], account=accounts[0])
     else:
         result = app.acquire_token_interactive(scopes=["User.Read"], prompt="select_account")
-    if not result["access_token"]:
-        st.write("Authenticate to access protected content")
+    #if not result["access_token"]:
+        #st.write("Authenticate to access protected content")
     # Check if token was obtained successfully
     if "access_token" in result:
-        st.write(result)
-        st.session_state.token = result["access_token"]
+        #st.write(result)
+        #st.session_state.token = result["access_token"]
         st.write("Protected content available")
-        st.rerun()
+        return result["access_token"]
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
@@ -60,68 +57,14 @@ def logout():
     if logged_accounts:
         for account in logged_accounts:
             app.remove_account(account)
-        st.session_state.token = None
-
-
-# Create a placeholder for token
-if "token" not in st.session_state:
-    st.session_state.token = None
-    
-add_selectbox = st.sidebar.container(border=True)
-if not st.session_state.token:
-    login_button_clicked = add_selectbox.button("Login", type="primary")
-    if login_button_clicked:
-        acquire_and_use_token()
-        
-        
-if add_selectbox.button("Sign out"):
-    st.session_state.token = None
-    logout()
-    st.rerun()
-if not st.session_state.token:
-    st.title("Azure Entra ID Login Page")
-    st.write("Authenticate to access protected content")
-    show_pages([Page("AIchatbot_page.py", "AIchatbot page"), Page("login_page.py", "login page")])
-    hide_pages(["AIchatbot page"])
-else:
-    st.title("Welcome! AI Chatbot ")
-    
-
-st.write(st.session_state)
+            st.session_state.token = None
 
 ```
-SAVE to a folder you are working on
-
-Below change the "redirect_login_url" (You should be able to see the port number once you run that script)
-
-Development team, You may write your code below "# Write the actual content below: " This will integrate the authentication feature to your content, hopefully :)
-```
-import streamlit as st
-import hashlib
-from st_pages import Page, show_pages, hide_pages
-redirect_login_url = "<Login Page URL with port number>/login%20page"
-st.title("AI Chatbot Page")
-st.write(st.session_state)
-
-if not st.session_state:
-    st.write("BLOCKED")
-    st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)
-    st.stop()
-else:
-    show_pages([Page("AIchatbot_page.py", "AIchatbot page"), Page("login_page.py", "login page")])
-    hide_pages(["login page"])
-    if st.button("Sign out"):
-        st.session_state.token = None
-        st.markdown(f'<meta http-equiv="refresh" content="0;URL={redirect_login_url}">', unsafe_allow_html=True)
-
-# Write the actual content below:
-```
-SAVE to a folder you are working on
 # Run the Script 
 Type the following in your command prompt or VScode command prompt:
-cd to the folder you put those two scripts (make sure you are in virtual env before cd) Only running login_page.py should be fine, the other script will run automatically.  
+cd to the folder you put those three scripts (make sure you are in virtual env before cd) Only running main.py should be fine:  
 ```
-streamlit run login_page.py
+streamlit run main.py
 ```
 WARNING: 
 There could be a potential bug that could prompt you with an error message like: "Page not found"  the first time you run the script LOCALLY, refreshing the page should resolve the problem.
