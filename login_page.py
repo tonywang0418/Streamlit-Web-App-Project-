@@ -6,9 +6,8 @@ import re
 
 def acquire_and_use_token():
     app = PublicClientApplication(
-    "25673ac4-5f19-4fc2-b01f-5c46b0a0ab3f",
-    authority="https://login.microsoftonline.com/f139cf46-660d-47d6-9df6-4a1ef9fb600f",
-    client_credential=None
+    "35af6748-20e6-4470-9bad-08154a34db69",
+    authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82",
     )
     #global result
     accounts = app.get_accounts()
