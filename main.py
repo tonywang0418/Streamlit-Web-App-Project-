@@ -5,11 +5,11 @@ from AIchatbot_page import main_content
 
 def main():
     add_selectbox = st.sidebar.container(border=True)
-    
+    st.write(st.session_state)
 
     if "access_token" not in st.session_state or st.session_state.access_token == None:
         
-        st.title("Azure Entra ID Login Pagee")
+        st.title("Azure Entra ID Login Page")
         st.write("Authenticate to access protected content")
         add_selectbox = st.sidebar.container(border=True)
         login_button_clicked = add_selectbox.button("Azure Login", type="primary")
