@@ -9,7 +9,7 @@ def main():
 
     if "access_token" not in st.session_state or st.session_state.access_token == None:
         
-        st.title("Azure Entra ID Login Page")
+        st.title("Azure Entra ID Login Pagee")
         st.write("Authenticate to access protected content")
         add_selectbox = st.sidebar.container(border=True)
         login_button_clicked = add_selectbox.button("Azure Login", type="primary")
