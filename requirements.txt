@@ -2,5 +2,3 @@
 msal-streamlit-authentication
 streamlit
 pymysql
-selenium
-chromedriver-autoinstaller
