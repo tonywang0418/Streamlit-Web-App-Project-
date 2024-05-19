@@ -7,10 +7,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 def acquire_and_use_token():
-    chromedriver_path = "/tmp/8dc77a7f08b3c3b/antenv/lib/python3.12/site-packages/chromedriver_autoinstaller"
     options = Options()
     options.add_argument("--headless=new")  # Run Chrome in headless mode
-    driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
+    driver = webdriver.Chrome(options=options)
     app = PublicClientApplication("35af6748-20e6-4470-9bad-08154a34db69", authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82")
     #global result
     accounts = app.get_accounts()
