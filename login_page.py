@@ -5,14 +5,19 @@ import pymysql
 import re
 
 def acquire_and_use_token():
-    app = PublicClientApplication("35af6748-20e6-4470-9bad-08154a34db69", authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82")
-    #global result
-    accounts = app.get_accounts()
-    if accounts:
-        result = app.acquire_token_silent(["User.Read"], account=accounts[0])
-    else:
-        result = app.acquire_token_interactive(scopes=["User.Read"], prompt="select_account")
-
+    client_id = "35af6748-20e6-4470-9bad-08154a34db69"
+    client_secret = "hJC8Q~J51exCf_V6h7pyG3H5G9zHuZQSDT15Dbsg"
+    authority = "https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82"
+    scopes = ["https://graph.microsoft.com/.default"]
+    app = PublicClientApplication(
+        client_id,
+        authority=authority
+    )
+    flow = app.initiate_device_flow(scopes=scopes)
+    st.write(flow['message'])
+    #flow["expires_at"] = 0
+    result = app.acquire_token_by_device_flow(flow)
+    st.write("bad")
 
     if "access_token" in result:
         
