@@ -1,4 +1,3 @@
 ﻿msal
-msal-streamlit-authentication
 streamlit
 pymysql
