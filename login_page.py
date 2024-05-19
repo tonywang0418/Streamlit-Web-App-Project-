@@ -8,15 +8,15 @@ from selenium.webdriver.chrome.options import Options
 
 def acquire_and_use_token():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run Chrome in headless mode
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.add_argument("--headless=new")  # Run Chrome in headless mode
+    driver = webdriver.Chrome(options=options)
     app = PublicClientApplication("35af6748-20e6-4470-9bad-08154a34db69", authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82")
     #global result
     accounts = app.get_accounts()
     if accounts:
         result = app.acquire_token_silent(["User.Read"], account=accounts[0])
     else:
-        auth_url = app.get_authorization_request_url(["User.Read"], redirect_uri="https://capstone492.azurewebsites.net")
+        auth_url = app.get_authorization_request_url(["User.Read"]) #redirect_uri="https://capstone492.azurewebsites.net")
         driver.get(auth_url)  # Open authentication URL in headless browser
         # Your code to handle authentication process here...
         result = app.acquire_token_interactive(scopes=["User.Read"], prompt="select_account")
