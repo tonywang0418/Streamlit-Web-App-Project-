@@ -4,10 +4,10 @@ import hashlib
 import pymysql
 import re
 from selenium import webdriver
-from selenium.webdriver.chrome.options import ChromeOptions
+from selenium.webdriver.chrome.options import Options
 
 def acquire_and_use_token():
-    options = ChromeOptions()
+    options = Options()
     options.add_argument("--headless=new")  # Run Chrome in headless mode
     driver = webdriver.Chrome(options=options)
     app = PublicClientApplication("35af6748-20e6-4470-9bad-08154a34db69", authority="https://login.microsoftonline.com/cfb43c26-9c6c-4fc7-b47d-c433bb597d82")
