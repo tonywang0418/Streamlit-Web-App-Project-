@@ -4,6 +4,11 @@ import hashlib
 import pymysql
 import re
 
+def database_connection():
+    mydb = pymysql.connect(host='<ip address or hostname>', user='<usernae>', password='<password>', database='<databse>') 
+    mycursor = mydb.cursor() 
+    return mycursor, mydb
+    
 def acquire_and_use_token():
     client_id = "<client ID>"
     authority = "https://login.microsoftonline.com/<tanent ID>"
@@ -84,12 +89,7 @@ def show_dialog():
 
     if st.button("Close"):
         st.rerun()
-
-def database_connection():
-    mydb = pymysql.connect(host='10.0.0.116', user='capstone', password='Zx2012abcd', database='capstone') 
-    mycursor = mydb.cursor() 
-    return mycursor, mydb
-
+        
 def hash_password(password):
     # Encode the password as UTF-8 before hashing
     password_utf8 = password.encode('utf-8')
