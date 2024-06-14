@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import win32evtlog
 
+# Network Log Generator
+# Code Version
+version = "1.0"
+
 # Function to read event logs
 def read_event_logs(log_type, num_logs):
     server = 'localhost'
