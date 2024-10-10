@@ -4,10 +4,10 @@ from flask import Flask, request, jsonify
 import pymysql
 
 app = Flask(__name__)
-SECRET_KEY = '123'
+SECRET_KEY = '<make your own secret key>'
 
 def database_connection():
-    mydb = pymysql.connect(host='10.0.0.117', user='tony', password='password',database='user_info')
+    mydb = pymysql.connect(host='<databse machine IP>', user='<database username>', password='<password>',database='<which database>')
     mycursor = mydb.cursor()
     return mycursor, mydb
 
