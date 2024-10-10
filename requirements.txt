@@ -1,3 +1,8 @@
 ﻿msal
 streamlit
 pymysql
+PyJWT
+datetime
+flask
+hashlib
+requests
