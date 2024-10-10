@@ -3,12 +3,13 @@ from msal import PublicClientApplication
 import hashlib
 import pymysql
 import re
+import requests
 
 def database_connection():
-    mydb = pymysql.connect(host='<ip address or hostname>', user='<usernae>', password='<password>', database='<databse>') 
-    mycursor = mydb.cursor() 
+    mydb = pymysql.connect(host='10.0.0.117', user='tony', password='password',database='user_info')
+    mycursor = mydb.cursor()
     return mycursor, mydb
-    
+
 def acquire_and_use_token():
     client_id = "<client ID>"
     authority = "https://login.microsoftonline.com/<tanent ID>"
@@ -22,74 +23,60 @@ def acquire_and_use_token():
     result = app.acquire_token_by_device_flow(flow)
 
     if "access_token" in result:
-        
+
         st.write("Protected content available")
         return result["access_token"]
-    
+
     else:
         st.error("Token acquisition failed")
         st.error(result.get("error_description", "No further details"))
 
-@st.experimental_dialog("Username & Password LOGIN")
+
+@st.dialog("Username & Password LOGIN")
 def show_dialog():
-    choice = st.selectbox('Login/Signup',['Login','Sign up'])
+    choice = st.selectbox('Login/Signup', ['Login', 'Sign up'])
     if choice == 'Login':
         username = st.text_input("Username:")
         password = st.text_input("Password:", type='password')
-        
+
         hash_pass = hash_password(password)
-        try:
-            if st.button("Login"):
-                
-                mycursor, mydb = database_connection()
-                hash_query = "SELECT * FROM user_info WHERE username = %s AND password = %s"
-                mycursor.execute(hash_query, (username, hash_pass))
-                user = mycursor.fetchone()
-                if "login_state" not in st.session_state:
-                    st.session_state.login_state = None
-                mydb.close()
-                if user:
-                    st.title('successfully logged in')
+        if st.button("Login"):
+            try:
+                response = requests.post("http://127.0.0.1:5000/login", json={'username': username, 'password': hash_pass})
+                if response.status_code == 200:
                     st.session_state.login_state = True
+                    st.session_state.JWT_token = response.json().get("token")
+                    st.title('successfully logged in')
                     st.rerun()
                 else:
                     st.error('Bad username or password')
                     return False
-            
-        except pymysql.Error as error:
-                st.write("Error:", error)
-                return False
-    #sign up
-    else:
+            except requests.exceptions.RequestException as e:
+                st.error(f"An error occurred: {e}")
+    # sign up
+    elif choice == 'Sign up':
         signup_email = st.text_input("Enter your unique username")
         signup_password = st.text_input("Password:", type='password')
         if st.button("Sign Up"):
             if not signup_email.strip():
                 st.error("Username cannot be empty. Please enter a valid username.")
-            #st.session_state.password_requirement = None
-            else:
-                valid_pass = is_valid_password(signup_password)
-                if st.session_state.password_requirement != None and st.session_state.password_requirement != False:
+            if is_valid_password(signup_password):
+                if st.session_state.password_requirement is not None and st.session_state.password_requirement != False:
+                    hashed_password = hash_password(signup_password)
                     try:
-                        mycursor, mydb = database_connection()
-                        hash = hash_password(signup_password)
-
-                        query =  "INSERT INTO `user_info` (`username`, `password`) VALUES (%s,%s)"
-                        mycursor.execute(query,(signup_email, hash))
-                        mydb.commit()
-                        mydb.close()
-                        if st.session_state.password_requirement == True:
-                            st.title('successfully sign up! You may log in now')
-                    except pymysql.IntegrityError as error:
-                        st.error("Username has been taken, Please change another one.")
-                    #except Exception as e:
-                        #st.error("An error occurred during sign up. Please try again later.")
-                #else:
-                    #st.error("bad")
+                        response = requests.post("http://127.0.0.1:5000/signup", json={'username': signup_email, 'password': hashed_password})
+                        if response.status_code == 201:
+                            st.success("Successfully signed up! You may now log in.")
+                        elif response.status_code == 409:
+                            st.error("Username already exists. Please choose another one.")
+                        else:
+                            st.error("An error occurred during sign up. Please try again later.")
+                    except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to backend: {e}")
 
     if st.button("Close"):
         st.rerun()
-        
+
 def hash_password(password):
     # Encode the password as UTF-8 before hashing
     password_utf8 = password.encode('utf-8')
@@ -102,7 +89,7 @@ def is_valid_password(password):
     special_chars = r"[!@#$%^&*()_+=\[{\]};:<>|./?,-]"
     # Check minimum length
     if len(password) < min_length:
-        st.session_state.password_requirement = False 
+        st.session_state.password_requirement = False
         st.error("Password must be at least 8 characters long")
         return False
 
@@ -124,7 +111,6 @@ def is_valid_password(password):
     else:
         st.session_state.password_requirement = True
         return True
-
 
 
 
